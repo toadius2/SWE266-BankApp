@@ -1,3 +1,3 @@
-# Project Instructino
+# Project Instruction
 
 ## Build Phase

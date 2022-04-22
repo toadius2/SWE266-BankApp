@@ -60,3 +60,5 @@ $ flask run
 # deactivate virtual machine
 $ deactivate
 ```
+
+Server will run at http://127.0.0.1:5000, and for development, you can use Postman to verify API, or use SQLite GUI to browse database.
