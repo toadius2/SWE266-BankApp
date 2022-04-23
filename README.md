@@ -16,9 +16,6 @@ The tech stack in the project:
 # clone the project
 $ git clone https://github.com/toadius2/SWE266-BankApp.git
 $ cd SWE266-BankApp
-
-# check out branch (this is just for example project local demo)
-$ git checkout flask-project-example
 ```
 
 ### Create a `.flaskenv` file to put flask env variables under the root directory
