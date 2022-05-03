@@ -11,3 +11,12 @@
     - amouont of withdraw/deposit validation based on spec
     - routers controllers (transaction, transaction-result)
 
+## Vulnerability
+
+- Vulnerability 1 (Yingru)
+
+- Vulnerability 2 (Yu-Che)
+
+- Vulnerability 3 (Adam)
+
+- Vulnerability 4 (?)
