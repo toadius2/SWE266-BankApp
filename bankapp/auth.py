@@ -51,7 +51,6 @@ def register():
                 )
                 db.commit()
 
-            # TODO: this is error from tutorial, need to refacto to be secured and early terminated
             except db.IntegrityError:
                 error = f"User {username} is already registered."
             else:

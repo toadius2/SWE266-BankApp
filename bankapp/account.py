@@ -14,10 +14,14 @@ def index():
 
     if g.user is not None:
         print('user id: ', g.user['id'])
-
     return render_template('account/index.html')
 
 @bp.route('/transaction', methods=('GET', 'POST'))
 @login_required
 def transaction():
     return render_template('account/transaction.html')
+
+@bp.route('/transaction-result', methods=('GET', 'POST'))
+@login_required
+def transaction_result():
+    return render_template('account/transaction-result.html')
