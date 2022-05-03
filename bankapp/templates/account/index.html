@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Welcome{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  {% if g.user %}
+    <h1>Current Account Balance</h1>
+    <p>If user login successfully, show info belows</p>
+    <p>Display current balance here</p>
+    <p>
+      <a class="action" href="{{ url_for('account.transaction') }}">
+        Deposit or Withdraw
+      </a>
+    </p>
+  {% endif %}
+{% endblock %}

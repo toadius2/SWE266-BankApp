@@ -14,6 +14,9 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        email = request.form['email']
+        phone_number = request.form['phone_number']
+        initial_balance = request.form['initial_balance']
         db = get_db()
         error = None
 
@@ -21,14 +24,33 @@ def register():
             error = 'Username is required.'
         elif not password:
             error = 'Password is required.'
+        elif not email:
+            error = 'Phone number is required'
+        elif not email:
+            error = 'Email is required'
+        elif not initial_balance:
+            error: 'Initial balance for deposit is required'
 
         if error is None:
             try:
                 db.execute(
-                    "INSERT INTO user (username, password) VALUES (?, ?)",
-                    (username, generate_password_hash(password)),
+                    "INSERT INTO user (username, password, phone_number, email) VALUES (?, ?, ?, ?)",
+                    (username, generate_password_hash(password), phone_number, email),
                 )
                 db.commit()
+
+                user_id_query = db.execute(
+                'SELECT id FROM user WHERE username = ?', (username,)
+                ).fetchone()
+                user_id = user_id_query['id']
+
+                db.execute(
+                    'INSERT INTO account (user_id, balance)'
+                ' VALUES (?, ?)',
+                    (user_id, initial_balance)
+                )
+                db.commit()
+
             except db.IntegrityError:
                 error = f"User {username} is already registered."
             else:

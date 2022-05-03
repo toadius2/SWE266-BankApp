@@ -1,6 +1,4 @@
-# Project Instruction
-
-## Build Phase
+# Course Discussion
 
 ### Course discussion for service and entity
 #### Service for user service:
@@ -19,7 +17,6 @@
         - (precondition) The fractional input should match /[0-9]{2}/
         - (precondition) should match /(0|[1-9][0-9]*)/
         - (postcondition) update account amount
-        
 
 #### Snapshot for bank account entity;
 - accountId (auto generated) (primary key)

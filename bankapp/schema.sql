@@ -1,17 +1,18 @@
 DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS post;
+DROP TABLE IF EXISTS account;
 
+-- Currentlly, we only have regular user (i.e., no role field in this table for user like manager or admin)
 CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT UNIQUE NOT NULL,
-  password TEXT NOT NULL
+  password TEXT NOT NULL,
+  phone_number INTEGER NOT NULL,
+  email TEXT NOT NULL
 );
 
-CREATE TABLE post (
+CREATE TABLE account (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  author_id INTEGER NOT NULL,
-  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  title TEXT NOT NULL,
-  body TEXT NOT NULL,
-  FOREIGN KEY (author_id) REFERENCES user (id)
+  user_id INTEGER NOT NULL,
+  balance DECIMAl(16, 2) NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES user (id)
 );
