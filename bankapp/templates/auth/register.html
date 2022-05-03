@@ -6,18 +6,36 @@
 
 {% block content %}
   <form method="post">
-    <p>ToDo: validation and some fields based on spec</p>
+    <p>Please note: all fields are required. Thank you.</p>
     <label for="username">User Name</label>
-    <input name="username" id="username" required>
+    <input
+      name="username"
+      id="username"
+      required
+      oninvalid="this.setCustomValidity('Enter User Name')"
+      oninput="this.setCustomValidity('')">
     <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
-    <label for="phone_number">Phone Number</label>
-    <input name="phone_number" id="phone_number" required>
-    <label for="email">Email</label>
-    <input name="email" id="email" required>
-    <label for="initial_balance">Inital Balance for deposit</label>
-    <input name="initial_balance" id="initial_balance" required>
-
+    <input
+      type="password"
+      name="password"
+      id="password"
+      required
+      oninvalid="this.setCustomValidity('Enter Password')"
+      oninput="this.setCustomValidity('')">
+    <label for="phone_number">Phone Number (10 digital numbers, no space or hyphen)</label>
+    <input
+      name="phone_number"
+      id="phone_number"
+      required
+      oninvalid="this.setCustomValidity('Enter valid phone number')"
+      oninput="this.setCustomValidity('')">
+    <label for="initial_balance">Inital Balance for Deposit</label>
+    <input
+      name="initial_amount"
+      id="initial_amount"
+      required
+      oninvalid="this.setCustomValidity('Enter valid amount for deposit')"
+      oninput="this.setCustomValidity('')">
     <input type="submit" value="Register">
   </form>
 {% endblock %}

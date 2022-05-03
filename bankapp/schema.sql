@@ -6,8 +6,7 @@ CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
-  phone_number INTEGER NOT NULL,
-  email TEXT NOT NULL
+  phone_number INTEGER NOT NULL
 );
 
 CREATE TABLE account (
