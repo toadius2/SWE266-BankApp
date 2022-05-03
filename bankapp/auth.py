@@ -20,7 +20,7 @@ def register():
         db = get_db()
         error = None
 
-        regex_chars = re.compile("[_\\-\\.0-9a-z]+")
+        regex_chars = re.compile('[_\\-\\.0-9a-z]+')
         regex_amount = re.compile('(0|[1-9][0-9]*)(\\.[0-9]{2})?')
 
         # Check if the front-end does not prevent empty fields
@@ -31,26 +31,26 @@ def register():
         elif phone_number.isnumeric() == False or len(phone_number) != 10:
             error = 'Phone number is required and should be numeric and 10 digital numbers'
         elif initial_amount.isnumeric() == False or regex_amount.fullmatch(initial_amount) is None:
-            error = 'Not a valid numeric input'
+            error = 'Not a valid numeric initial amount input'
 
         if (len(username) > 127):
-            error = "User name should be less than 127 characters."
+            error = 'User name should be less than 127 characters.'
         elif (regex_chars.fullmatch(username) == None):
-            error = "User name contains illegal characters. Only allow underscores, hyphens, dots, digits, and lowercase alphabetical characters."
+            error = 'User name contains illegal characters. Only allow underscores, hyphens, dots, digits, and lowercase alphabetical characters.'
 
         if (len(password) > 127):
-            error = "Password should be less than 127 characters."
+            error = 'Password should be less than 127 characters.'
         elif (regex_chars.fullmatch(password) == None):
-            error = "Password contains illegal characters. Only allow underscores, hyphens, dots, digits, and lowercase alphabetical characters."
+            error = 'Password contains illegal characters. Only allow underscores, hyphens, dots, digits, and lowercase alphabetical characters.'
 
-        find_user_ps = "SELECT id FROM user WHERE username = ?"
+        find_user_ps = 'SELECT id FROM user WHERE username = ?'
         if db.execute(find_user_ps, (username,)).fetchone() is not None:
             error = 'User {} is already registered.'.format(username)
 
         if error is None:
             try:
                 db.execute(
-                    "INSERT INTO user (username, password, phone_number) VALUES (?, ?, ?)",
+                    'INSERT INTO user (username, password, phone_number) VALUES (?, ?, ?)',
                     (username, generate_password_hash(password), phone_number),
                 )
                 db.commit()
@@ -58,15 +58,15 @@ def register():
                 user_id_query = db.execute(find_user_ps, (username,)).fetchone()
                 user_id = user_id_query['id']
                 db.execute(
-                    "INSERT INTO account (user_id, balance) VALUES (?, ?)",
+                    'INSERT INTO account (user_id, balance) VALUES (?, ?)',
                     (user_id, initial_amount)
                 )
                 db.commit()
 
             except db.IntegrityError:
-                error = f"Unknown server error"
+                error = f'Unknown server error'
             else:
-                return redirect(url_for("auth.login"))
+                return redirect(url_for('auth.login'))
 
         flash(error)
     return render_template('auth/register.html')
@@ -93,7 +93,6 @@ def login():
             return redirect(url_for('index'))
 
         flash(error)
-
     return render_template('auth/login.html')
 
 @bp.before_app_request
@@ -119,7 +118,6 @@ def login_required(view):
             return redirect(url_for('auth.login'))
 
         return view(**kwargs)
-
     return wrapped_view
 
 def verify_number(amount):
