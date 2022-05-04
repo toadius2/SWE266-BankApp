@@ -6,10 +6,21 @@
 
 {% block content %}
   <form method="post">
-    <label for="username">Username</label>
-    <input name="username" id="username" required>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
+    <label for="username">User Name</label>
+    <input
+      name="username"
+      id="username"
+      required
+      oninvalid="this.setCustomValidity('Enter User Name')"
+      oninput="this.setCustomValidity('')">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        name="password"
+        id="password"
+        required
+        oninvalid="this.setCustomValidity('Enter Password')"
+        oninput="this.setCustomValidity('')">
     <input type="submit" value="Log In">
   </form>
 {% endblock %}
