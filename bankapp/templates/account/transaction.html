@@ -1,13 +1,30 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Withdraw or Deposit{% endblock %}</h1>
+  <h1>{% block title %}Transaction{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-  <p>Display current balance here</p>
-  <p>Please enter the amount you would like to deposit or withdraw:</p>
-  <p>A input field of amount</p>
-  <p>A button of deposit</p>
-  <p>A button of withdraw</p>
+
+  <h3>Current Account Balance</h3>
+  <p>{{ balance }}</p>
+
+  <h3>Please enter the amount you would like to deposit or withdraw:</h3>
+  <form method="POST">
+    <label for="deposit_amount">Deposit</label>
+    <input type="text" name="deposit_amount" id="deposit_amount" 
+    oninvalid="this.setCustomValidity('Enter Deposit Amount')">
+    <input type="submit" value="deposit" name="deposit-withdraw">    
+
+    <label for="withdraw_amount">Withdraw</label>
+    <input type="text" name="withdraw_amount" id="withdraw_amount" 
+    oninvalid="this.setCustomValidity('Enter Withdraw Amount')">
+    <input type="submit" value="withdraw" name="deposit-withdraw">
+  </form>
+
+  <p>
+      <a class="action" href="{{ url_for('index') }}">
+          Back to home page
+      </a>
+  </p>
 {% endblock %}

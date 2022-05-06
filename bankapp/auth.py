@@ -21,7 +21,7 @@ def register():
         error = None
 
         regex_chars = re.compile('[_\\-\\.0-9a-z]+')
-        regex_amount = re.compile('(0|[1-9][0-9]*)(\\.[0-9]{2})?')
+        regex_amount = re.compile('0\\.[0-9]{2}|[1-9][0-9]*\\.[0-9]{2}')
 
         # Check if the front-end does not prevent empty fields
         if not username:
@@ -30,7 +30,7 @@ def register():
             error += 'Password is required.'
         elif phone_number.isnumeric() == False or len(phone_number) != 10:
             error = 'Phone number is required and should be numeric and 10 digital numbers'
-        elif initial_amount.isnumeric() == False or regex_amount.fullmatch(initial_amount) is None:
+        elif regex_amount.fullmatch(initial_amount) is None or float(initial_amount)  > 4294967295.99:
             error = 'Not a valid numeric initial amount input'
 
         if (len(username) > 127):
