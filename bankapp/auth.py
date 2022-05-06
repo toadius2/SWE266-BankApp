@@ -10,10 +10,34 @@ from bankapp.db import get_db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-@bp.route('/register', methods=('GET', 'POST'))
-def register():
+@bp.route('/register-start', methods=('GET', 'POST'))
+def register_start():
     if request.method == 'POST':
         username = request.form['username']
+        db = get_db()
+        error = None
+
+        regex_chars = re.compile('[_\\-\\.0-9a-z]+')
+
+        if not username:
+            error = 'User name is required.'
+        elif len(username) > 127:
+            error = 'User name should be less than 127 characters.'
+        elif regex_chars.fullmatch(username) == None:
+            error = 'User name contains illegal characters. Only allow underscores, hyphens, dots, digits, and lowercase alphabetical characters.'
+
+        if error is None:
+            session['username'] = username
+            return redirect(url_for('auth.register', username=username))
+
+        flash(error)
+    return render_template('auth/register-start.html')
+
+@bp.route('/register', methods=('GET', 'POST'))
+def register():
+    username = request.args.get('username')
+
+    if request.method == 'POST':
         password = request.form['password']
         phone_number = request.form['phone_number']
         initial_amount = request.form['initial_amount']
@@ -69,7 +93,8 @@ def register():
                 return redirect(url_for('auth.login'))
 
         flash(error)
-    return render_template('auth/register.html')
+    session['username'] = username
+    return render_template('auth/register.html', username=username)
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
@@ -91,8 +116,18 @@ def login():
             session.clear()
             session['user_id'] = user['id']
             return redirect(url_for('index'))
-
         flash(error)
+
+    elif request.method == 'GET':
+        username = session.get('username', None)
+        if username:
+            find_user_ps = 'SELECT id FROM user WHERE username = ?'
+            db = get_db()
+            user_id = db.execute(find_user_ps, (username,)).fetchone()
+
+            if user_id is not None and user_id['id']:
+                session['user_id'] = user_id['id']
+                return redirect(url_for('index'))
     return render_template('auth/login.html')
 
 @bp.before_app_request
@@ -119,11 +154,3 @@ def login_required(view):
 
         return view(**kwargs)
     return wrapped_view
-
-def verify_number(amount):
-    pattern = re.compile('(0|[1-9][0-9]*)(\\.[0-9]{2})?')
-    match = pattern.fullmatch(amount)
-    if match is None:
-        return False
-    else:
-        return True
