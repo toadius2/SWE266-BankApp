@@ -91,7 +91,6 @@ def register():
                 error = f'Unknown server error'
             else:
                 return redirect(url_for('auth.login'))
-
         flash(error)
     session['username'] = username
     return render_template('auth/register.html', username=username)
@@ -118,8 +117,10 @@ def login():
             return redirect(url_for('index'))
         flash(error)
 
-    elif request.method == 'GET':
-        username = session.get('username', None)
+    if request.method == 'GET':
+        # Check if the user login or not. If login, redirect to home
+        username = (g.user and g.user['username']) or session.get('username', None)
+
         if username:
             find_user_ps = 'SELECT id FROM user WHERE username = ?'
             db = get_db()
@@ -128,6 +129,10 @@ def login():
             if user_id is not None and user_id['id']:
                 session['user_id'] = user_id['id']
                 return redirect(url_for('index'))
+
+    target = request.args.get('target')
+    if target and len(target) > 0:
+        return redirect(target)
     return render_template('auth/login.html')
 
 @bp.before_app_request

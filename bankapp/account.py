@@ -12,10 +12,11 @@ bp = Blueprint('account', __name__)
 
 @bp.route('/')
 def index():
-    db = get_db()
+    # If user doesn't login, go to login page
+    if g.user is None:
+        return redirect(url_for('auth.login', target=''))
 
-    if g.user is not None:
-        print('user id: ', g.user['id'])
+    # otherwise, go to home page
     return render_template('account/index.html')
 
 @bp.route('/show_balance', methods=('GET', 'POST'))
