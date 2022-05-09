@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Register{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="username">User Name</label>
+    <input
+      name="username"
+      id="username"
+      required
+      oninvalid="this.setCustomValidity('Enter User Name')"
+      oninput="this.setCustomValidity('')">
+    <label for="password">Password</label>
+    <input type="submit" value="Next">
+  </form>
+{% endblock %}

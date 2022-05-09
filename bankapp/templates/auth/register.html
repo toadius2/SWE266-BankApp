@@ -5,15 +5,9 @@
 {% endblock %}
 
 {% block content %}
+  <h2>Hi {{ username }}!</h2>
   <form method="post">
     <p>Please note: all fields are required. Thank you.</p>
-    <label for="username">User Name</label>
-    <input
-      name="username"
-      id="username"
-      required
-      oninvalid="this.setCustomValidity('Enter User Name')"
-      oninput="this.setCustomValidity('')">
     <label for="password">Password</label>
     <input
       type="password"
