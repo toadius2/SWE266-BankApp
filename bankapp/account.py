@@ -1,12 +1,12 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for
+    Blueprint, flash, g, redirect, render_template, request, url_for, send_file
 )
 from werkzeug.exceptions import abort
 
 from bankapp.auth import login_required
 from bankapp.db import get_db
 
-import re
+import re, os
 
 bp = Blueprint('account', __name__)
 
@@ -18,6 +18,19 @@ def index():
 
     # otherwise, go to home page
     return render_template('account/index.html')
+
+@bp.route('/download_user_image')
+@login_required
+def download_user_image():
+    image_id = request.args.get('image_id')
+    images_path = os.path.dirname(os.path.abspath(__file__))
+
+    if image_id == None:
+        user_image_path = os.path.join(images_path, 'images', str(g.user['id']) + '.jpg')
+    else:
+        user_image_path = images_path + '/' + 'images' + '/' + image_id
+
+    return send_file(user_image_path, as_attachment=True)
 
 @bp.route('/show_balance', methods=('GET', 'POST'))
 @login_required
