@@ -13,8 +13,6 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 @bp.route('/register-start', methods=('GET', 'POST'))
 def register_start():
     if request.method == 'POST':
-
-
         username = request.form['username']
         db = get_db()
         error = None
@@ -104,12 +102,9 @@ def login():
         password = request.form['password']
         db = get_db()
         error = None
-        # sql_statement = 'SELECT * FROM user WHERE username = ' + "'" + username + "'"
         user = db.execute(
             'SELECT * FROM user WHERE username = ?', (username,)
         ).fetchone()
-
-
 
         if user is None:
             error = 'Incorrect username.'
