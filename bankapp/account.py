@@ -26,7 +26,8 @@ def download_user_image():
     images_path = os.path.dirname(os.path.abspath(__file__))
 
     if image_id == None:
-        user_image_path = os.path.join(images_path, 'images', str(g.user['id']) + '.jpg')
+        # user_image_path = os.path.join(images_path, 'images', str(g.user['id']) + '.jpg')
+        user_image_path = os.path.join(images_path, 'images', 'default.jpg')
     else:
         user_image_path = images_path + '/' + 'images' + '/' + image_id
 
