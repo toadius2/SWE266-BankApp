@@ -1,7 +1,5 @@
 # SWE266-BankApp
 
-This is just for project study before we decide what techniques we will use. I followed the flask official [tutorial](https://flask.palletsprojects.com/en/2.1.x/tutorial/) to set up the project.
-
 The tech stack in the project:
 - Flask
 - SQLite3

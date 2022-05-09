@@ -22,9 +22,9 @@ def register_start():
         if not username:
             error = 'User name is required.'
         elif len(username) > 127:
-            error = 'User name should be less than 127 characters.'
+            error = 'User name is too long.'
         elif regex_chars.fullmatch(username) == None:
-            error = 'User name contains illegal characters. Only allow underscores, hyphens, dots, digits, and lowercase alphabetical characters.'
+            error = 'User name contains illegal characters.'
 
         if error is None:
             session['username'] = username
@@ -58,14 +58,14 @@ def register():
             error = 'Not a valid numeric initial amount input'
 
         if (len(username) > 127):
-            error = 'User name should be less than 127 characters.'
+            error = 'User name is too long.'
         elif (regex_chars.fullmatch(username) == None):
-            error = 'User name contains illegal characters. Only allow underscores, hyphens, dots, digits, and lowercase alphabetical characters.'
+            error = 'User name contains illegal characters.'
 
         if (len(password) > 127):
-            error = 'Password should be less than 127 characters.'
+            error = 'Password is too long.'
         elif (regex_chars.fullmatch(password) == None):
-            error = 'Password contains illegal characters. Only allow underscores, hyphens, dots, digits, and lowercase alphabetical characters.'
+            error = 'Password contains illegal characters.'
 
         find_user_ps = 'SELECT id FROM user WHERE username = ?'
         if db.execute(find_user_ps, (username,)).fetchone() is not None:
