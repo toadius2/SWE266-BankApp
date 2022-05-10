@@ -70,7 +70,7 @@ def transaction():
 
         if action == "deposit":
             if regex_amount.fullmatch(deposit_amount) is None or float(deposit_amount)  > 4294967295.99:
-                result_msg = 'Not a valid numeric deposit amount input'
+                result_msg = 'Not a valid deposit or withdrawal amount.'
                 return render_template('account/transaction-result.html', result_msg = result_msg, balance = "{:.2f}".format(balance['balance']))
             else:      
                 updated_balance = balance['balance'] + float(deposit_amount)       
@@ -78,12 +78,12 @@ def transaction():
                 db.commit()
         else:
             if regex_amount.fullmatch(withdraw_amount) is None or float(withdraw_amount)  > 4294967295.99:
-                result_msg = 'Not a valid numeric withdraw amount input'
+                result_msg = 'Not a valid deposit or withdrawal amount.'
                 return render_template('account/transaction-result.html', result_msg = result_msg, balance = "{:.2f}".format(balance['balance']))
             else:
                 updated_balance = balance['balance'] - float(withdraw_amount)
                 if updated_balance < 0:
-                    result_msg = 'Not sufficient balance'
+                    result_msg = 'Insufficient Balance.'
                     return render_template('account/transaction-result.html', result_msg = result_msg, balance = "{:.2f}".format(balance['balance']))
                 else:
                     db.execute('UPDATE account SET balance = ? WHERE user_id = ?', (updated_balance, g.user['id'],))
