@@ -55,7 +55,7 @@ def register():
         elif phone_number.isnumeric() == False or len(phone_number) != 10:
             error = 'Phone number is required and should be numeric and 10 digital numbers'
         elif regex_amount.fullmatch(initial_amount) is None or float(initial_amount)  > 4294967295.99:
-            error = 'Not a valid numeric initial amount input'
+            error = 'Not a valid deposit or withdrawal amount'
 
         if (len(username) > 127):
             error = 'User name is too long.'
