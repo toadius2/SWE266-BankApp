@@ -123,9 +123,22 @@ def login():
             return redirect(url_for('index'))
 
     target = request.args.get('target')
+    # if target param exist, use a whitelist redirect function to decide redirection
     if target and len(target) > 0:
-        return redirect(target)
+        return check_redirect(target)
     return render_template('auth/login.html')
+
+def check_redirect(target):
+    whilte_list = ['https://uci.edu']
+
+    # Check if target is whitelist
+    if target.startswith('http:') or target.startswith('https://'):
+        if target in whilte_list:
+            print('This is in white_list, do redirection')
+            return redirect(target)
+        else:
+            print('This is not in white_list, do nothing')
+            return
 
 @bp.before_app_request
 def load_logged_in_user():
