@@ -19,17 +19,19 @@ def index():
     # otherwise, go to home page
     return render_template('account/index.html')
 
-@bp.route('/download_user_image')
+@bp.route('/download_user_image', methods=('GET', 'POST'))
 @login_required
 def download_user_image():
     image_id = request.args.get('image_id')
     images_path = os.path.dirname(os.path.abspath(__file__))
 
-    if image_id == None:
-        # user_image_path = os.path.join(images_path, 'images', str(g.user['id']) + '.jpg')
-        user_image_path = os.path.join(images_path, 'images', 'default.jpg')
+    # regex_image_id = re.compile('[0-9]*')
+    if image_id == None or image_id == str(g.user['id']):
+        # user_image_path = os.path.join(images_path, 'images', f"{g.user['id']}.jpg")  # future
+        user_image_path = os.path.join(images_path, 'images', 'default.jpg')  # for now, only allow download default.jpg
     else:
-        user_image_path = images_path + '/' + 'images' + '/' + image_id
+        # invalid image_id
+        user_image_path = os.path.join(images_path, 'images', 'default.jpg')  
 
     return send_file(user_image_path, as_attachment=True)
 
@@ -69,11 +71,12 @@ def transaction():
         ).fetchone()
 
         if action == "deposit":
-            if regex_amount.fullmatch(deposit_amount) is None or float(deposit_amount)  > 4294967295.99:
+            # The max value of a float in python is 1.7976931348623157e+308
+            if regex_amount.fullmatch(deposit_amount) is None or float(deposit_amount)  > 4294967295.99 or (1.7976931348623157e+308 - balance['balance']) < float(deposit_amount):
                 result_msg = 'Not a valid deposit or withdrawal amount.'
                 return render_template('account/transaction-result.html', result_msg = result_msg, balance = "{:.2f}".format(balance['balance']))
             else:      
-                updated_balance = balance['balance'] + float(deposit_amount)       
+                updated_balance = balance['balance'] + float(deposit_amount)                    
                 db.execute('UPDATE account SET balance = ? WHERE user_id = ?', (updated_balance, g.user['id'],))
                 db.commit()
         else:

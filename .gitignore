@@ -5,6 +5,8 @@
 env/
 venv/
 .venv/
+myvenv/
+.myvenv/
 env*
 
 .DS_Store
