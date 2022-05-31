@@ -1,0 +1,12 @@
+#!/bin/sh
+'''exec' "/Users/che/Desktop/mac_desktop/studyabroad/CS_learning/MSWE_course/Q3/01 - 266P  Software Security and Dependability/team_project/SWE266-BankApp/myvenv/bin/python3" "$0" "$@"
+' '''
+# -*- coding: utf-8 -*-
+import re
+import sys
+
+from setuptools.command.easy_install import main
+
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
+    sys.exit(main())
