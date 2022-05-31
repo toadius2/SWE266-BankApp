@@ -28,14 +28,14 @@ def register_start():
 
         if error is None:
             session['username'] = username
-            return redirect(url_for('auth.register', username=username))
+            return redirect(url_for('auth.register', username_register=username))
 
         flash(error)
     return render_template('auth/register-start.html')
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
-    username = request.args.get('username')
+    username = request.args.get('username_register')
 
     if request.method == 'POST':
         password = request.form['password']
@@ -119,21 +119,26 @@ def login():
 
     if request.method == 'GET':
         # Check if the user login or not. If login, redirect to home
-        username = (g.user and g.user['username']) or session.get('username', None)
-
-        if username:
-            find_user_ps = 'SELECT id FROM user WHERE username = ?'
-            db = get_db()
-            user_id = db.execute(find_user_ps, (username,)).fetchone()
-
-            if user_id is not None and user_id['id']:
-                session['user_id'] = user_id['id']
-                return redirect(url_for('index'))
+        if g.user is not None:
+            return redirect(url_for('index'))
 
     target = request.args.get('target')
+    # if target param exist, use a whitelist redirect function to decide redirection
     if target and len(target) > 0:
-        return redirect(target)
+        return check_redirect(target)
     return render_template('auth/login.html')
+
+def check_redirect(target):
+    whilte_list = ['https://uci.edu']
+
+    # Check if target is whitelist
+    if target.startswith('http:') or target.startswith('https://'):
+        if target in whilte_list:
+            print('This is in white_list, do redirection')
+            return redirect(target)
+        else:
+            print('This is not in white_list, do nothing')
+            return
 
 @bp.before_app_request
 def load_logged_in_user():
