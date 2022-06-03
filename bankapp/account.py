@@ -72,7 +72,8 @@ def transaction():
 
         if action == "deposit":
             # The max value of a float in python is 1.7976931348623157e+308
-            if regex_amount.fullmatch(deposit_amount) is None or float(deposit_amount)  > 4294967295.99 or (1.7976931348623157e+308 - balance['balance']) < float(deposit_amount):
+            # The max value of a float in SQLite is 9223372036854775808.00
+            if regex_amount.fullmatch(deposit_amount) is None or float(deposit_amount)  > 4294967295.99 or (9223372036854775808.00 - balance['balance']) < float(deposit_amount):
                 result_msg = 'Not a valid deposit or withdrawal amount.'
                 return render_template('account/transaction-result.html', result_msg = result_msg, balance = "{:.2f}".format(balance['balance']))
             else:      
